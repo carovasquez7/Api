@@ -26,20 +26,14 @@ from bs4 import BeautifulSoup
 colombia = "https://www.superfinanciera.gov.co/jsp/loader.jsf?lServicio=Publicaciones&lTipo=publicaciones&lFuncion=loadContenidoPublicacion&id=10427"
 page = urllib2.urlopen(colombia)
 
-soup = BeautifulSoup(page, 'html5lib')
-soup_div = soup.find_all('div', class_='pub')
-soup_a = soup_div.find_all('a')
+soup = BeautifulSoup(page, 'html.parser')
 
+#soup_div = soup.find('div', class_='pub').find('a')
 
-#soup_li = [i['href'] for i in soup.find_all('a', href=True)]
+soup_div = soup.find('div', class_='pub').find('ul')
 
-#for i in soup.find_all('div', attrs={'class' : 'project-card-content'}):
-  #  print i.a['href']
+for i in soup_div:
+	#print i
+	print i.find('a')
+#print soup_div
 
-
-#f = open("ScrapingColombia.txt", 'w')
-
-#f.write(soup_li)
-#f.close()
-
-print soup_a

@@ -1,39 +1,69 @@
-'''
-
-from bs4 import BeautifulSoup
-
-import requests
-
-url = raw_input("Enter a website to extract the URL's from: ")
-
-r  = requests.get("http://" +url)
-
-data = r.text
-
-soup = BeautifulSoup(data)
-
-for link in soup.find_all('a'):
-    print(link.get('href'))
-
-'''
-
 import urllib2
 from bs4 import BeautifulSoup
 
 
 #f = open("ScrapingColombia.txt", r)
 
-colombia = "https://www.superfinanciera.gov.co/jsp/loader.jsf?lServicio=Publicaciones&lTipo=publicaciones&lFuncion=loadContenidoPublicacion&id=10427"
+
+URLBASE="https://www.superfinanciera.gov.co"
+colombia = URLBASE +"/jsp/loader.jsf?lServicio=Publicaciones&lTipo=publicaciones&lFuncion=loadContenidoPublicacion&id=10427"
+
 page = urllib2.urlopen(colombia)
+soup = BeautifulSoup(page, 'lxml')
 
-soup = BeautifulSoup(page, 'html.parser')
+#Genera Diccionario con los datos
+soup_a = soup.find_all('a')
+list_elementos=[]
+for links in soup.find_all('a'):
+	
+	url = str(links.get('href')).replace(URLBASE,"")
+	
+	if(url.split("?")[0]=="/descargas"):
+		title =str(links.get('title'))
+		if(title!="None"):
+			title=title.replace(" de","").split(" ")
+			elemento = {
+				"moth": title[0],
+				"year": title[1],
+				"url": URLBASE + url
+			}
+			list_elementos.append(elemento)
 
-#soup_div = soup.find('div', class_='pub').find('a')
+print list_elementos
 
-soup_div = soup.find('div', class_='pub').find('ul')
+
+
+
+
+
+###  Recorrer PAGINA
+''' extrae el tag <a>
+#soup_div = soup.find('div',{'class':'pub'}).find('ul')
 
 for i in soup_div:
-	#print i
-	print i.find('a')
-#print soup_div
 
+	#print i imprime li	
+	soup_a = i.find('a')
+	print soup_a
+	
+#print soup_div imprime ul
+#print type(soup_div)
+'''
+
+#attributes_dictionary = soup.find('div', class_='pub').find('ul')
+
+
+'''
+for tag_li in attributes_dictionary:
+	#print links
+	for tag_a in tag_li:
+		print tag_a
+'''
+'''
+print type (attributes_dictionary)
+print type (tag_li)
+print type (tag_a)
+'''
+
+
+ 	

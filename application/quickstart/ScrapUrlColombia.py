@@ -1,7 +1,8 @@
 import urllib2
 from bs4 import BeautifulSoup
-
-
+import requests
+import sys
+import webbrowser
 #f = open("ScrapingColombia.txt", r)
 
 
@@ -29,8 +30,27 @@ for links in soup.find_all('a'):
 			}
 			list_elementos.append(elemento)
 
+print type(list_elementos)
+
+
+''' CREAR ARCHIVO TXT DE LA LISTA, VERSION 1
+sys.stdout = open('ListaUrl.txt','w')
 print list_elementos
 
+
+CREAR ARCHIVO TXT DE LA LISTA, VERSION 2
+with open('ListaUrl2.txt','w') as output:
+	output.write(str(list_elementos))
+
+'''
+
+#CREAR ARCHIVO TXT DE LA LISTA, VERSION 3 y ultima.
+file = open('ListaUrl.txt','w')
+
+for elemento in list_elementos:
+	print >>file, elemento.get('url')
+
+file.close()
 
 
 
@@ -49,21 +69,3 @@ for i in soup_div:
 #print soup_div imprime ul
 #print type(soup_div)
 '''
-
-#attributes_dictionary = soup.find('div', class_='pub').find('ul')
-
-
-'''
-for tag_li in attributes_dictionary:
-	#print links
-	for tag_a in tag_li:
-		print tag_a
-'''
-'''
-print type (attributes_dictionary)
-print type (tag_li)
-print type (tag_a)
-'''
-
-
- 	
